@@ -1,0 +1,77 @@
+# ===========================
+# BACKEND GITIGNORE
+# Express + MongoDB
+# ===========================
+
+# ----- Dependencies -----
+node_modules/
+
+# ----- Environment Files -----
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# ----- Uploaded Files (user content) -----
+uploads/gallery/originals/*
+uploads/gallery/optimized/*
+uploads/gallery/thumbs/*
+uploads/gallery/*.png
+uploads/gallery/*.jpg
+uploads/gallery/*.jpeg
+uploads/gallery/*.webp
+!uploads/gallery/.gitkeep
+!uploads/gallery/originals/.gitkeep
+!uploads/gallery/optimized/.gitkeep
+!uploads/gallery/thumbs/.gitkeep
+
+# ----- Build Output -----
+dist/
+build/
+out/
+
+# ----- SSL / Certificates -----
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+*.jks
+
+# ----- Service Account / Cloud Credentials -----
+*-service-account.json
+*-credentials.json
+*-keyfile.json
+gcloud-*.json
+service-account*.json
+credentials*.json
+
+# ----- OS Files -----
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ----- IDE / Editor -----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ----- Logs -----
+*.log
+npm-debug.log*
+logs/
+
+# ----- Runtime -----
+*.pid
+*.seed
+tmp/
+temp/
+
+# ----- Test / Coverage -----
+coverage/
+.nyc_output/
