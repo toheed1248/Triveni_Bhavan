@@ -298,17 +298,17 @@ function Lightbox({
       <button
         onClick={onClose}
         className="
-          absolute right-4 top-4 z-20
-          flex h-11 w-11 items-center justify-center
+          absolute right-3 top-3 z-20
+          flex h-12 w-12 items-center justify-center
           rounded-full border border-white/10
           bg-white/10 text-white
           backdrop-blur-md
           transition hover:bg-white/20
-          sm:right-7 sm:top-7
+          sm:right-5 sm:top-5 sm:h-11 sm:w-11
         "
-        aria-label="Close viewer"
+        aria-label="Close gallery viewer"
       >
-        <X size={19} />
+        <X size={22} />
       </button>
 
       {/* Previous */}
@@ -316,17 +316,17 @@ function Lightbox({
         onClick={onPrev}
         className="
           absolute left-3 top-1/2 z-20
-          flex h-11 w-11 -translate-y-1/2
+          flex h-12 w-12 -translate-y-1/2
           items-center justify-center
           rounded-full border border-white/10
           bg-white/10 text-white
           backdrop-blur-md
           transition hover:bg-white/20
-          sm:left-7
+          sm:left-5 sm:h-11 sm:w-11
         "
         aria-label="Previous image"
       >
-        <ChevronLeft size={20} />
+        <ChevronLeft size={22} />
       </button>
 
       {/* Next */}
@@ -334,17 +334,17 @@ function Lightbox({
         onClick={onNext}
         className="
           absolute right-3 top-1/2 z-20
-          flex h-11 w-11 -translate-y-1/2
+          flex h-12 w-12 -translate-y-1/2
           items-center justify-center
           rounded-full border border-white/10
           bg-white/10 text-white
           backdrop-blur-md
           transition hover:bg-white/20
-          sm:right-7
+          sm:right-5 sm:h-11 sm:w-11
         "
         aria-label="Next image"
       >
-        <ChevronRight size={20} />
+        <ChevronRight size={22} />
       </button>
 
       {/* Image */}
