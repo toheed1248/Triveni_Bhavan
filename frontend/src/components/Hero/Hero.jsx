@@ -51,54 +51,52 @@ const fadeUp = {
   }),
 }
 
-function SlideImage({ slide, index, isActive }) {
-  const [loaded, setLoaded] = useState(false)
+function SlideImage({ slide, index, isMobile }) {
+  const objectPosition = isMobile ? slide.posM : slide.posD
 
   return (
-    <div
-      className="absolute inset-0 h-full w-full"
+    <img
+      src={slide.image}
+      alt={slide.alt}
+      className={`hero-slide-${index} absolute inset-0 h-full w-full object-cover`}
       style={{
-        opacity: loaded ? 1 : 0,
-        transition: 'opacity 0.85s ease-in-out',
-        willChange: 'opacity',
+        objectPosition,
+        willChange: 'transform',
       }}
-      aria-hidden="true"
-    >
-      <img
-        src={slide.image}
-        alt={slide.alt}
-        className={`hero-slide-${index} absolute inset-0 h-full w-full object-cover`}
-        style={{
-          objectPosition: slide.posD,
-          transform: isActive ? 'scale(1)' : 'scale(1.02)',
-          transition: 'transform 3.1s cubic-bezier(0.22, 1, 0.36, 1)',
-          willChange: 'transform',
-        }}
-        onLoad={() => setLoaded(true)}
-        loading="eager"
-        fetchPriority="high"
-      />
-    </div>
+      loading="eager"
+      fetchPriority="high"
+    />
   )
 }
 
-function PreloadImages() {
+function PreloadAllImages({ onComplete }) {
   useEffect(() => {
+    let completed = 0
+    const total = heroSlides.length
+
+    const checkComplete = () => {
+      completed++
+      if (completed === total) {
+        onComplete()
+      }
+    }
+
     heroSlides.forEach((slide) => {
-      const link = document.createElement('link')
-      link.rel = 'preload'
-      link.as = 'image'
-      link.href = slide.image
-      link.fetchPriority = 'high'
-      document.head.appendChild(link)
+      const img = new Image()
+      img.onload = checkComplete
+      img.onerror = checkComplete
+      img.src = slide.image
+      img.fetchPriority = 'high'
     })
-  }, [])
+  }, [onComplete])
+
   return null
 }
 
 export default function Hero() {
   const [current, setCurrent] = useState(0)
-  const [mounted, setMounted] = useState(false)
+  const [imagesReady, setImagesReady] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const touchStartX = useRef(null)
   const { settings } = useBusinessSettings()
 
@@ -108,7 +106,10 @@ export default function Hero() {
   const yearsExperience = settings?.yearsExperience || 0
 
   useEffect(() => {
-    setMounted(true)
+    const checkMobile = () => setIsMobile(window.innerWidth < 640)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   const next = useCallback(() => {
@@ -144,7 +145,7 @@ export default function Hero() {
 
   const slide = heroSlides[current]
 
-  if (!mounted) {
+  if (!imagesReady) {
     return (
       <section
         id="home"
@@ -161,6 +162,7 @@ export default function Hero() {
         "
       >
         <div className="absolute inset-0 bg-[#211B19]" />
+        <PreloadAllImages onComplete={() => setImagesReady(true)} />
       </section>
     )
   }
@@ -181,13 +183,11 @@ export default function Hero() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <PreloadImages />
-
       {/* =====================================================
           BACKGROUND SLIDES
       ====================================================== */}
       <div className="absolute inset-0 z-0">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={current}
             className="absolute inset-0"
@@ -196,7 +196,19 @@ export default function Hero() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.85, ease: 'easeInOut' }}
           >
-            <SlideImage slide={slide} index={current} isActive={true} />
+            <div className="absolute inset-0 h-full w-full">
+              <motion.div
+                className="absolute inset-0 h-full w-full"
+                initial={{ scale: 1.08 }}
+                animate={{ scale: 1 }}
+                transition={{
+                  duration: 3.1,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <SlideImage slide={slide} index={current} isMobile={isMobile} />
+              </motion.div>
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>

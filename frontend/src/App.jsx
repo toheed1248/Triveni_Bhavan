@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Analytics } from "@vercel/analytics/next"
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { BusinessSettingsProvider } from './contexts/BusinessSettingsContext'
 

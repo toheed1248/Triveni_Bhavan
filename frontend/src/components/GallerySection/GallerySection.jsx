@@ -118,7 +118,7 @@ function GalleryCard({ item, index, onClick }) {
       `}
       onClick={() => onClick(item)}
     >
-      <div className="relative h-full min-h-[260px] overflow-hidden sm:min-h-[300px] lg:min-h-[320px]">
+      <div className="relative h-full min-h-[220px] overflow-hidden sm:min-h-[260px] lg:min-h-[300px] xl:min-h-[320px]">
         {!error ? (
           <img
             src={thumbUrl}
@@ -348,7 +348,7 @@ function Lightbox({
       </button>
 
       {/* Image */}
-      <div className="relative mx-14 flex max-h-[88vh] w-full max-w-6xl flex-col items-center sm:mx-20">
+      <div className="relative mx-2 flex max-h-[92vh] w-full max-w-full flex-col items-center sm:mx-4">
         {!imgLoaded && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="h-9 w-9 animate-spin rounded-full border-2 border-white/20 border-t-[#E4C77E]" />
@@ -367,23 +367,23 @@ function Lightbox({
           alt={item.title}
           onLoad={() => setImgLoaded(true)}
           className="
-            max-h-[72vh]
+            max-h-[85vh]
             w-auto max-w-full
             rounded-xl
             object-contain
             shadow-[0_30px_100px_rgba(0,0,0,0.45)]
-            sm:max-h-[76vh]
+            sm:max-h-[80vh]
           "
         />
 
         {/* Info */}
-        <div className="mt-5 text-center">
-          <p className="font-serif text-lg text-white sm:text-xl">
+        <div className="mt-3 text-center sm:mt-4">
+          <p className="font-serif text-base text-white sm:text-lg">
             {item.title || 'Triveni Bhavan'}
           </p>
 
-          <div className="mt-2 flex items-center justify-center gap-3">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#E4C77E]">
+          <div className="mt-1.5 flex items-center justify-center gap-2 sm:mt-2 sm:gap-3">
+            <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#E4C77E] sm:text-[10px]">
               {item.category}
             </span>
 
@@ -410,7 +410,8 @@ function GallerySkeleton() {
         <div
           key={item}
           className="
-            min-h-[260px]
+            min-h-[220px]
+            sm:min-h-[260px]
             animate-pulse
             rounded-[1.35rem]
             bg-[#211B19]/5
