@@ -43,7 +43,7 @@ export default function HeritageSection() {
               transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <LazyImage
-                src="/images/Mandir-image.png"
+                src="/images/Murti_view.png"
                 alt="Triveni Bhavan Temple and Mandir"
                 className="w-full h-72 sm:h-80 lg:h-[480px] rounded-2xl"
               />

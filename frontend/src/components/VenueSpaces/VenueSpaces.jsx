@@ -18,7 +18,7 @@ const venues = [
     description:
       "A spacious setting for weddings, family functions and celebrations with an open, comfortable atmosphere.",
     icon: Landmark,
-    image: "/images/Open_Hall.webp",
+    image: "/images/Close_hall.png",
     large: true,
   },
   {
@@ -27,7 +27,7 @@ const venues = [
     description:
       "A comfortable indoor space for ceremonies, receptions and private family occasions.",
     icon: Landmark,
-    image: "/images/Close_benquet.webp",
+    image: "/images/Night_open_hall.png",
   },
   {
     title: "Temple / Mandir",
@@ -35,7 +35,7 @@ const venues = [
     description:
       "A peaceful traditional space for rituals, blessings and meaningful family ceremonies.",
     icon: Church,
-    image: "/images/Mandir_outside.webp",
+    image: "/images/Murti_image.png",
   },
 ];
 

@@ -160,7 +160,7 @@ export default function ExperienceSection() {
             >
 
               <motion.img
-                src="/images/Morning View.webp"
+                src="/images/day_photo.png"
                 alt={`${businessName} venue`}
                 className="
                   h-full

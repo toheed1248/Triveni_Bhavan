@@ -10,25 +10,25 @@ import { useBusinessSettings } from '../../contexts/BusinessSettingsContext'
 
 const heroSlides = [
   {
-    image: '/images/Night_View.webp',
+    image: '/images/Night_View.png',
     alt: 'Triveni Bhavan nighttime view',
     posD: 'center center',
     posM: 'center 62%',
   },
   {
-    image: '/images/Mandir_outside.webp',
+    image: '/images/Mandir_view.png',
     alt: 'Triveni Bhavan Mandir',
     posD: 'center center',
     posM: 'center 58%',
   },
   {
-    image: '/images/Day_view_of_open_hall.webp',
+    image: '/images/Data_view_open_hall.png',
     alt: 'Triveni Bhavan open hall',
     posD: 'center center',
     posM: 'center 62%',
   },
   {
-    image: '/images/Night_open_hall_function.webp',
+    image: '/images/Night_open_hall.png',
     alt: 'Triveni Bhavan banquet function',
     posD: 'center center',
     posM: 'center 58%',
