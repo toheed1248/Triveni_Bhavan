@@ -8,6 +8,7 @@ import {
   Mail,
   ArrowUpRight,
 } from 'lucide-react'
+import api from '../../services/api'
 
 const eventTypes = [
   'Wedding',
@@ -87,34 +88,26 @@ export default function EnquiryForm() {
     setSubmitting(true)
 
     try {
-      const res = await fetch('/api/enquiries', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: form.name,
-          phone: form.phone,
-          email: form.email,
-          eventType: form.eventType,
-          bookingFrom: form.bookingFrom,
-          bookingTo: form.bookingTo,
-          guestCount: form.guestCount ? Number(form.guestCount) : undefined,
-          preferredVenue: form.venuePreference,
-          requiredFacilities: form.facilities,
-          message: form.message,
-        }),
+      const res = await api.post('/enquiries', {
+        name: form.name,
+        phone: form.phone,
+        email: form.email,
+        eventType: form.eventType,
+        bookingFrom: form.bookingFrom,
+        bookingTo: form.bookingTo,
+        guestCount: form.guestCount ? Number(form.guestCount) : undefined,
+        preferredVenue: form.venuePreference,
+        requiredFacilities: form.facilities,
+        message: form.message,
       })
 
-      const data = await res.json()
-
-      if (res.ok && data.success) {
+      if (res.data?.success) {
         setSubmitted(true)
       } else {
-        setErrorMessage(data.message || 'Something went wrong. Please try again.')
+        setErrorMessage(res.data?.message || 'Something went wrong. Please try again.')
       }
-    } catch {
-      setErrorMessage('Unable to connect to the server. Please try again later.')
+    } catch (err) {
+      setErrorMessage(err.response?.data?.message || 'Unable to connect to the server. Please try again later.')
     } finally {
       setSubmitting(false)
     }
