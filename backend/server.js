@@ -20,6 +20,9 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
 
+// Trust Render's proxy for correct IP detection (rate limiting, etc.)
+app.set('trust proxy', 1)
+
 connectDB().catch(() => {
   console.log('Server running without MongoDB connection')
 })

@@ -95,7 +95,5 @@ const settingsSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-settingsSchema.index({ settingsKey: 1 }, { unique: true })
-
 module.exports = mongoose.model('Settings', settingsSchema)
 module.exports.FACILITIES = FACILITIES
