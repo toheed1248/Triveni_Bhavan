@@ -51,21 +51,54 @@ const fadeUp = {
   }),
 }
 
-function SlideImage({ slide, index }) {
+function SlideImage({ slide, index, isActive }) {
+  const [loaded, setLoaded] = useState(false)
+
   return (
-    <img
-      src={slide.image}
-      alt={slide.alt}
-      className={`hero-slide-${index} absolute inset-0 h-full w-full object-cover`}
+    <div
+      className="absolute inset-0 h-full w-full"
       style={{
-        objectPosition: slide.posD,
+        opacity: loaded ? 1 : 0,
+        transition: 'opacity 0.85s ease-in-out',
+        willChange: 'opacity',
       }}
-    />
+      aria-hidden="true"
+    >
+      <img
+        src={slide.image}
+        alt={slide.alt}
+        className={`hero-slide-${index} absolute inset-0 h-full w-full object-cover`}
+        style={{
+          objectPosition: slide.posD,
+          transform: isActive ? 'scale(1)' : 'scale(1.02)',
+          transition: 'transform 3.1s cubic-bezier(0.22, 1, 0.36, 1)',
+          willChange: 'transform',
+        }}
+        onLoad={() => setLoaded(true)}
+        loading="eager"
+        fetchPriority="high"
+      />
+    </div>
   )
+}
+
+function PreloadImages() {
+  useEffect(() => {
+    heroSlides.forEach((slide) => {
+      const link = document.createElement('link')
+      link.rel = 'preload'
+      link.as = 'image'
+      link.href = slide.image
+      link.fetchPriority = 'high'
+      document.head.appendChild(link)
+    })
+  }, [])
+  return null
 }
 
 export default function Hero() {
   const [current, setCurrent] = useState(0)
+  const [mounted, setMounted] = useState(false)
   const touchStartX = useRef(null)
   const { settings } = useBusinessSettings()
 
@@ -73,6 +106,10 @@ export default function Hero() {
   const tagline = settings?.tagline || 'Where Traditions Meet Celebration.'
   const description = settings?.description || 'A timeless destination for weddings, celebrations, gatherings and unforgettable moments.'
   const yearsExperience = settings?.yearsExperience || 0
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % heroSlides.length)
@@ -82,9 +119,6 @@ export default function Hero() {
     setCurrent((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
   }, [])
 
-  // Automatic slide: every 3 seconds.
-  // Intentionally does not pause on hover so the slider remains consistent
-  // on desktop and mobile.
   useEffect(() => {
     const timer = setInterval(next, 3000)
     return () => clearInterval(timer)
@@ -110,47 +144,62 @@ export default function Hero() {
 
   const slide = heroSlides[current]
 
+  if (!mounted) {
+    return (
+      <section
+        id="home"
+        aria-label="Triveni Bhavan Hero"
+        className="
+          relative
+          h-[100vh]
+          h-[100svh]
+          min-h-[680px]
+          w-full
+          overflow-hidden
+          bg-[#211B19]
+          select-none
+        "
+      >
+        <div className="absolute inset-0 bg-[#211B19]" />
+      </section>
+    )
+  }
+
   return (
     <section
       id="home"
       aria-label="Triveni Bhavan Hero"
       className="
         relative
+        h-[100vh]
         h-[100svh]
         min-h-[680px]
         w-full
         overflow-hidden
-        bg-[#211B19]
         select-none
       "
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      <PreloadImages />
+
       {/* =====================================================
           BACKGROUND SLIDES
       ====================================================== */}
-      <AnimatePresence mode="sync" initial={false}>
-        <motion.div
-          key={current}
-          className="absolute inset-0 overflow-hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.85, ease: 'easeInOut' }}
-        >
+      <div className="absolute inset-0 z-0">
+        <AnimatePresence mode="wait">
           <motion.div
-            className="absolute inset-0 h-full w-full"
-            initial={{ scale: 1.08 }}
-            animate={{ scale: 1 }}
-            transition={{
-              duration: 3.1,
-              ease: [0.22, 1, 0.36, 1],
-            }}
+            key={current}
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.85, ease: 'easeInOut' }}
           >
-            <SlideImage slide={slide} index={current} />
+            <SlideImage slide={slide} index={current} isActive={true} />
           </motion.div>
-        </motion.div>
-      </AnimatePresence>
+        </AnimatePresence>
+      </div>
 
       {/* Desktop left readability gradient */}
       <div
